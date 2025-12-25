@@ -356,12 +356,9 @@ const SummaryComponent = () => {
                 <thead>
                   <tr>
                     <th>Statistic</th>
-                    {Object.keys(summary.numerical_stats).slice(0, 5).map(col => (
+                    {Object.keys(summary.numerical_stats).map(col => (
                       <th key={col}>{col}</th>
                     ))}
-                    {Object.keys(summary.numerical_stats).length > 5 && (
-                      <th>+{Object.keys(summary.numerical_stats).length - 5} more</th>
-                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -370,7 +367,7 @@ const SummaryComponent = () => {
                       summary.numerical_stats[Object.keys(summary.numerical_stats)[0]][stat] !== undefined && (
                         <tr key={stat}>
                           <td><strong>{stat}</strong></td>
-                          {Object.keys(summary.numerical_stats).slice(0, 5).map(col => (
+                          {Object.keys(summary.numerical_stats).map(col => (
                             <td key={col}>
                               {summary.numerical_stats[col][stat] !== undefined ?
                                 (typeof summary.numerical_stats[col][stat] === 'number' ?
@@ -379,26 +376,13 @@ const SummaryComponent = () => {
                                 '-'}
                             </td>
                           ))}
-                          {Object.keys(summary.numerical_stats).length > 5 && (
-                            <td style={{ opacity: 0.6 }}>...</td>
-                          )}
                         </tr>
                       )
                     ))}
                 </tbody>
               </table>
             </div>
-            {Object.keys(summary.numerical_stats).length > 5 && (
-              <p style={{
-                fontSize: '14px',
-                opacity: 0.7,
-                marginTop: '8px',
-                textAlign: 'center'
-              }}>
-                Showing statistics for first 5 numerical columns.
-                Full analysis available in EDA section.
-              </p>
-            )}
+
           </div>
         )}
 
@@ -416,7 +400,7 @@ const SummaryComponent = () => {
               {Object.entries(summary.categorical_distributions).slice(0, 6).map(([column, distribution]) => {
                 const chartData = prepareChartData(distribution);
                 const sortedData = chartData.sort((a, b) => b.value - a.value).slice(0, 15); // Top 15 classes
-                
+
                 return (
                   <div key={column} style={{
                     backgroundColor: 'var(--card-bg)',
@@ -431,22 +415,22 @@ const SummaryComponent = () => {
                     }}>
                       {column}
                     </h4>
-                    
+
                     {sortedData.length > 0 ? (
                       <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={sortedData} margin={{ top: 5, right: 10, left: 0, bottom: 40 }}>
                           <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-                          <XAxis 
-                            dataKey="name" 
+                          <XAxis
+                            dataKey="name"
                             angle={-45}
                             textAnchor="end"
                             height={80}
                             tick={{ fontSize: 12 }}
                           />
-                          <YAxis 
+                          <YAxis
                             tick={{ fontSize: 12 }}
                           />
-                          <Tooltip 
+                          <Tooltip
                             contentStyle={{
                               backgroundColor: 'var(--card-bg)',
                               border: '1px solid var(--border-color)',
@@ -470,7 +454,7 @@ const SummaryComponent = () => {
                         No data available
                       </div>
                     )}
-                    
+
                     {sortedData.length < Object.keys(distribution).length && (
                       <div style={{
                         fontSize: '12px',
